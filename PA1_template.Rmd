@@ -35,12 +35,12 @@ hist(daily_steps$steps,
 # 2. Calculate and report the **mean** and **median** total number of steps taken per day
 
 mean_steps <- mean(daily_steps$steps, na.rm = TRUE)
-mean_steps
+cat("Mean steps: ", mean_steps)
 ```
 
 ```{r}
 median_steps <- median(daily_steps$steps, na.rm = TRUE)
-median_steps
+cat("Median steps: ", median_steps)
 ```
 
 ## What is the average daily activity pattern?
@@ -48,7 +48,22 @@ median_steps
 ```{r}
 # 1. Make a time series plot (i.e. `type = "l"`) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
+mean_interval_steps <- aggregate(steps ~ interval, data = df, FUN = mean, na.rm = TRUE)
+
+plot(mean_interval_steps$interval, mean_interval_steps$steps,
+     type = "l",                             # line plot
+     xlab = "5-minute Interval",
+     ylab = "Average Steps",
+     main = "Average Daily Activity Pattern",
+     col = "skyblue")
+```
+
+```{r}
 # 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
+
+max_steps <- mean_interval_steps[which.max(mean_interval_steps$steps), ]
+cat("Max average steps occur at interval", max_steps$interval,
+    "with", round(max_steps$steps, 2), "steps on average.\n")
 ```
 
 ## Imputing missing values
