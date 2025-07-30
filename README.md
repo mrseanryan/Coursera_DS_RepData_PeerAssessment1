@@ -1,3 +1,5 @@
+# Reproducible Research: Peer Assessment 1 (Module 2 - Course Project 1)
+
 ## Introduction
 
 It is now possible to collect a large amount of data about personal

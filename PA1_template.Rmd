@@ -146,7 +146,44 @@ diff_check(median_diff, "Median")
 ```{r}
 # 1. Create a new factor variable in the dataset with two levels -- "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
-# 1. Make a panel plot containing a time series plot (i.e. `type = "l"`) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
+df_filled$date <- as.Date(df_filled$date)
 
+# Get the day of the week
+day_type <- weekdays(df_filled$date)
 
+# Classify as "weekday" or "weekend"
+df_filled$day_type <- ifelse(day_type %in% c("Saturday", "Sunday"), "weekend", "weekday")
+
+# Convert to a factor
+df_filled$day_type <- factor(df_filled$day_type, levels = c("weekday", "weekend"))
 ```
+
+```{r}
+# Compute overall Y-axis range for both plots
+y_range <- range(df_filled$steps, na.rm = TRUE)
+
+# Set up 2-panel plot
+par(mfrow = c(2, 1), mar = c(4, 4, 2, 1))
+
+# Weekday plot
+with(subset(df_filled, day_type == "weekday"), {
+  plot(interval, steps, type = "l", col = "blue",
+       main = "Weekday: Average Steps by 5-Minute Interval",
+       xlab = "Interval", ylab = "Average Steps",
+       ylim = y_range)  # Set consistent Y-axis
+})
+
+# Weekend plot
+with(subset(df_filled, day_type == "weekend"), {
+  plot(interval, steps, type = "l", col = "darkgreen",
+       main = "Weekend: Average Steps by 5-Minute Interval",
+       xlab = "Interval", ylab = "Average Steps",
+       ylim = y_range)  # Set consistent Y-axis
+})
+```
+
+### Observations from the plots:
+- weekdays show a broader active time range (from earlier in the day, to later in the day).
+- weekdays generally show a higher average number of steps, especially from 5-minute intervals ~550 to ~1500
+  - exception: *weekends* show a higher average number of steps from 5-minute intervals ~1600 to ~1700
+- note: here, ~ indicates 'approximately'
