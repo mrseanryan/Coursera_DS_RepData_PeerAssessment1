@@ -5,14 +5,28 @@ output:
     keep_md: true
 ---
 
+```{r set_globals, echo=FALSE, results="hide"}
+# Do echo the code, and show the results.
+knitr::opts_chunk$set(echo = TRUE, results = "show")
+```
 
 ## Loading and preprocessing the data
 
-
+```{r}
+df <- read.csv(unz("activity.zip", "activity.csv"), stringsAsFactors = FALSE)
+```
 
 ## What is mean total number of steps taken per day?
 
+```{r}
+# Aggregate steps per day (excluding NA values)
+daily_steps <- aggregate(steps ~ date, data = df, FUN = sum, na.rm = TRUE)
 
+# Calculate the mean of steps per day
+mean_steps <- mean(daily_steps$steps, na.rm = TRUE)
+
+mean_steps
+```
 
 ## What is the average daily activity pattern?
 
