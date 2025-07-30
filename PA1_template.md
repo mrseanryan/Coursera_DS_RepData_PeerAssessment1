@@ -5,20 +5,19 @@ output:
     keep_md: true
 ---
 
-```{r set_globals, echo=FALSE, results="hide"}
-# Do echo the code, and show the results.
-knitr::opts_chunk$set(echo = TRUE, results = "show")
-```
+
 
 ## Loading and preprocessing the data
 
-```{r}
+
+``` r
 df <- read.csv(unz("activity.zip", "activity.csv"), stringsAsFactors = FALSE)
 ```
 
 ## What is mean total number of steps taken per day?
 
-```{r}
+
+``` r
 # 1. Make a histogram of the total number of steps taken each day
 
 # Aggregate steps per day (excluding NA values)
@@ -32,19 +31,33 @@ hist(daily_steps$steps,
      border = "white")
 ```
 
-```{r}
+![](C:/sean/src/github/mrseanryan/Coursera_DS_RepData_PeerAssessment1/PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+
+
+``` r
 # 2. Calculate and report the **mean** and **median** total number of steps taken per day
 
 mean_steps <- mean(daily_steps$steps, na.rm = TRUE)
 cat("Mean steps: ", mean_steps)
+```
 
+```
+## Mean steps:  10766.19
+```
+
+``` r
 median_steps <- median(daily_steps$steps, na.rm = TRUE)
 cat("Median steps: ", median_steps)
 ```
 
+```
+## Median steps:  10765
+```
+
 ## What is the average daily activity pattern?
 
-```{r}
+
+``` r
 # 1. Make a time series plot (i.e. `type = "l"`) of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
 mean_interval_steps <- aggregate(steps ~ interval, data = df, FUN = mean, na.rm = TRUE)
@@ -57,7 +70,10 @@ plot(mean_interval_steps$interval, mean_interval_steps$steps,
      col = "skyblue")
 ```
 
-```{r}
+![](C:/sean/src/github/mrseanryan/Coursera_DS_RepData_PeerAssessment1/PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+
+
+``` r
 # 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 max_steps <- mean_interval_steps[which.max(mean_interval_steps$steps), ]
@@ -65,15 +81,25 @@ cat("Max average steps occur at interval", max_steps$interval,
     "with", round(max_steps$steps, 2), "steps on average.\n")
 ```
 
+```
+## Max average steps occur at interval 835 with 206.17 steps on average.
+```
+
 ## Imputing missing values
 
-```{r}
+
+``` r
 # 1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with `NA`s)
 
 cat("Number of rows with missing steps", sum(is.na(df$steps)))
 ```
 
-```{r}
+```
+## Number of rows with missing steps 2304
+```
+
+
+``` r
 # 2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 
 # Impute the missing steps, using the average number of steps for that 5-minute interval across all days.
@@ -83,7 +109,8 @@ avg_interval_steps <- aggregate(steps ~ interval, data = df, FUN = mean, na.rm =
 ```
 
 
-```{r}
+
+``` r
 # 3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
 # Merge average steps per interval back to the original data
@@ -96,7 +123,8 @@ df_filled$steps[is.na(df_filled$steps)] <- df_filled$steps_avg[is.na(df_filled$s
 df_filled$steps_avg <- NULL
 ```
 
-```{r}
+
+``` r
 # 4. Make a histogram of the total number of steps taken each day.
 
 daily_steps_filled <- aggregate(steps ~ date, data = df_filled, FUN = sum, na.rm = TRUE)
@@ -107,23 +135,50 @@ hist(daily_steps_filled$steps,
      col = "skyblue",
      breaks = 10,
      border = "white")
+```
 
-```{r}
+![](C:/sean/src/github/mrseanryan/Coursera_DS_RepData_PeerAssessment1/PA1_template_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+
+``` r
 # Calculate and report the **mean** and **median** total number of steps taken per day.
 
 mean_steps_filled <- mean(daily_steps_filled$steps, na.rm = TRUE)
 cat("Mean steps (filled): ", mean_steps_filled)
+```
 
+```
+## Mean steps (filled):  10766.19
+```
+
+``` r
 median_steps_filled <- median(daily_steps_filled$steps, na.rm = TRUE)
 cat("Median steps (filled): ", median_steps_filled)
+```
 
+```
+## Median steps (filled):  10766.19
+```
+
+``` r
 # - Do these values differ from the estimates from the first part of the assignment?
 mean_diff <- mean_steps_filled - mean_steps
 cat("Mean steps (filled vs missing): ", mean_steps_filled,  mean_steps, " difference:", mean_diff)
+```
 
+```
+## Mean steps (filled vs missing):  10766.19 10766.19  difference: 0
+```
+
+``` r
 median_diff <- median_steps_filled - median_steps
 cat("Median steps (filled vs missing): ", median_steps_filled,  median_steps, " difference:", median_diff)
+```
 
+```
+## Median steps (filled vs missing):  10766.19 10765  difference: 1.188679
+```
+
+``` r
 # - What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 diff_check <- function(diff, name)
@@ -140,12 +195,24 @@ diff_check <- function(diff, name)
   }
 }
 diff_check(mean_diff, "Mean")
+```
+
+```
+## ABOUT SAME: estimate of * Mean * total daily number of steps.
+```
+
+``` r
 diff_check(median_diff, "Median")
+```
+
+```
+## INCREASED: estimate of * Median * total daily number of steps.
 ```
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-```{r}
+
+``` r
 # 1. Create a new factor variable in the dataset with two levels -- "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
 df_filled$date <- as.Date(df_filled$date)
@@ -160,7 +227,8 @@ df_filled$day_type <- ifelse(day_type %in% c("Saturday", "Sunday"), "weekend", "
 df_filled$day_type <- factor(df_filled$day_type, levels = c("weekday", "weekend"))
 ```
 
-```{r}
+
+``` r
 # Compute overall Y-axis range for both plots
 y_range <- range(df_filled$steps, na.rm = TRUE)
 
@@ -183,6 +251,8 @@ with(subset(df_filled, day_type == "weekend"), {
        ylim = y_range)  # Set consistent Y-axis
 })
 ```
+
+![](C:/sean/src/github/mrseanryan/Coursera_DS_RepData_PeerAssessment1/PA1_template_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
 
 ### Observations from the plots:
 - weekdays show a broader active time range (from earlier in the day, to later in the day).
