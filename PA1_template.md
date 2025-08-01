@@ -31,7 +31,7 @@ hist(daily_steps$steps,
      border = "white")
 ```
 
-![](C:/sean/src/github/mrseanryan/Coursera_DS_RepData_PeerAssessment1/PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
 
 
 ``` r
@@ -70,7 +70,7 @@ plot(mean_interval_steps$interval, mean_interval_steps$steps,
      col = "skyblue")
 ```
 
-![](C:/sean/src/github/mrseanryan/Coursera_DS_RepData_PeerAssessment1/PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
 
 
 ``` r
@@ -137,7 +137,7 @@ hist(daily_steps_filled$steps,
      border = "white")
 ```
 
-![](C:/sean/src/github/mrseanryan/Coursera_DS_RepData_PeerAssessment1/PA1_template_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
 # Calculate and report the **mean** and **median** total number of steps taken per day.
@@ -252,7 +252,7 @@ with(subset(df_filled, day_type == "weekend"), {
 })
 ```
 
-![](C:/sean/src/github/mrseanryan/Coursera_DS_RepData_PeerAssessment1/PA1_template_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
+![](PA1_template_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
 
 ### Observations from the plots:
 - weekdays show a broader active time range (from earlier in the day, to later in the day).
